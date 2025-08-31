@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Read & Relived</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, rgb(244, 182, 129), rgb(221, 149, 235));
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+ .logo {
+  position: absolute;
+  top: 45px;
+  right: 70px;
+  z-index: 1000;
+}
+
+.logo img {
+  height: 100px;
+  width: auto;
+}
+    .tracker-container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #5c4033;
+    }
+
+    #book-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .book-card {
+      background: linear-gradient(to right, #dac58e, #b2eba5);
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      width: 250px;
+      text-align: left;
+    }
+
+    .book-card h4 {
+      margin: 0 0 5px;
+      color: #4e342e;
+    }
+
+    .book-card p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #3e2723;
+    }
+
+    .message {
+      font-size: 20px;
+      color: #3b713f;
+      font-family: 'Pacifico', cursive;
+      margin-top: 20px;
+    }
+
+    canvas {
+      position: fixed;
+      pointer-events: none;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    textarea {
+      width: 100%;
+      resize: none;
+      height: 60px;
+      margin-top: 8px;
+      padding: 6px;
+      border-radius: 5px;
+      border: 1px solid #aaa;
+    }
+
+    button.review-btn {
+      margin-top: 5px;
+      background-color: #6b4d38;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .user-review {
+      font-style: italic;
+      color: #3b3b3b;
+      font-size: 13px;
+      margin-top: 5px;
+    }
+  </style>
+</head>
+<body>
+<div class="logo">
+    <a href="booklyn.html">
+  <img src="bb.png" alt="logo" height="80">
+  </a>
+</div>
+  <div class="tracker-container">
+    <h2>📚 Read & Relived</h2>
+    <canvas id="confetti-canvas"></canvas>
+    <p id="status-message" class="message"></p>
+
+    <div id="book-list"></div>
+  </div>
+
+  <!-- Confetti script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const canvas = document.getElementById('confetti-canvas');
+    const confettiInstance = confetti.create(canvas, { resize: true, useWorker: true });
+
+    const bookList = document.getElementById('book-list');
+    const statusMsg = document.getElementById('status-message');
+
+    window.onload = () => {
+      const username = localStorage.getItem('username');
+      const key = `${username}-Read & Relived`;
+      const readBooks = JSON.parse(localStorage.getItem(key)) || [];
+
+      if (readBooks.length === 0) {
+        statusMsg.textContent = '📖 Did you finish reading? Add your book now!';
+        return;
+      }
+
+      statusMsg.textContent = '🎉 Wow! You completed a book — you’re a real reader! 🎉';
+
+      readBooks.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+
+        const reviewKey = `${username}-Review-${book.title}`;
+        const savedReview = localStorage.getItem(reviewKey) || '';
+
+        card.innerHTML = `
+          <h4>${book.title}</h4>
+          <p><strong>Author:</strong> ${book.author}</p>
+          <p>${book.description}</p>
+          <textarea placeholder="Write your review here..." style="width:230px;">${savedReview}</textarea>
+          <button class="review-btn" onclick="saveReview('${book.title}', this)" style="margin-left:4px;">💾 Save Review</button>
+          <p class="user-review">${savedReview ? 'Your review: ' + savedReview : ''}</p>
+        `;
+        bookList.appendChild(card);
+      });
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confettiInstance({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confettiInstance({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    };
+
+    function saveReview(title, button) {
+      const username = localStorage.getItem('username');
+      const textarea = button.previousElementSibling;
+      const review = textarea.value.trim();
+      const reviewKey = `${username}-Review-${title}`;
+      localStorage.setItem(reviewKey, review);
+
+      const msg = button.nextElementSibling;
+      msg.textContent = review ? `Your review: ${review}` : '';
+    }
+  </script>
+
+</body>
+</html>

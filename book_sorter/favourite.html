@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorites</title>
+    <link rel="stylesheet" href="favourite.css">
+</head>
+<body>
+    <div class="favorites-container">
+        <div class="fav-header"><h3>Hello, Book Lover !!</h3>
+         <a href="booklyn.html">
+  <img src="bb.png" alt="Logo" class="logo-image">
+</a> 
+        </div>
+        <div class="columns">
+            <div class="column">
+                <h4>Favorite Quotes</h4>
+                <input type="text" id="quote-input" placeholder="Add a Quote..." class="input"/>
+                <input type="text" id="author-input" placeholder="By whom?" class="input"/>
+                <button onclick="addItem('quote')">Add</button>
+                <hr id="quote-divider" class="divider" style="display:none;"/>
+                <ul id="quote-list"></ul>
+            </div>
+            <div class="column">
+                <h4>Favorite Words</h4>
+                <input type="text" id="word-input" placeholder="Word" class="input"/>
+                <input type="text" id="meaning-input" placeholder="Meaning" class="input"/>
+                <input type="text" id="example-input" placeholder="Example" class="input"/>
+                <button onclick="addItem('word')">Add</button>
+                 <hr id="word-divider" class="divider" style="display:none;"/>
+                <ul id="word-list"></ul>
+            </div>
+            <div class="column">
+                <h4>To-Do List</h4>
+        <input type="text" id="todo-input" placeholder="Add a task..." class="input" />
+        <button onclick="addItem('todo')">Add</button>
+         <hr id="todo-divider" class="divider" style="display:none;"/>
+        <ul id="todo-list"></ul>
+            </div>
+        </div>
+    </div>
+    <script src="favourite.js"></script>
+</body>
+</html>

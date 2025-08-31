@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>book-sorter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playwrite+DK+Loopet:wght@100..400&family=Rubik+Vinyl&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="booklyn.css">
+</head>
+<body>
+  <div class="container">
+    <div class="box1">
+  <div class="image2">
+    <img src="bb.png" alt="logo" height="300px" width="300px">
+  </div>
+ 
+  <div class="tracker-buttons">
+  <button class="signin-btn" id="signin-btn" onclick="goToLogin()">🔐 Sign In</button>
+  <button class="signin-btn" onclick="checkLogin('Read & Relived')">✔️ Read & Relived</button>
+  <button class="signin-btn" onclick="checkLogin('Currently Immersed')">⌛ Currently Immersed</button>
+  <button class="signin-btn" onclick="checkLogin('Wishlist Reads')"> 💭 Wishlist Reads</button>
+</div>
+  <div class="center-welcome-text">
+    <h1>WELCOME TO BOOK-SORTER</h1>
+    <p>
+      Ever felt stuck trying to find good books?<br>
+      Don’t worry, now you have Book-Sorter here to help you out!<br>
+      This site helps you keep track of your reading journey — organize by genre, search, and track what you're reading.
+    </p>
+    <p id="dynamicquote" class="quote-style"></p>
+  </div>
+   <div class="image">
+   <div class="extras">
+  <div class="hover-btn">
+    <button class="extra-btn" onclick="window.location.href='favourite.html'">❤️</button>
+    <span class="hover-label">Favourites</span>
+  </div>
+  <div class="hover-btn">
+    <button class="extra-btn" onclick="toggleDictionary()">📖</button>
+    <span class="hover-label">Dictionary</span>
+  </div>
+  <div class="hover-btn">
+    <a href="chat.html">
+    <button class="extra-btn">💬</button></a>
+    <span class="hover-label">Chat</span>
+  </div>
+</div>
+    <img src="BOOKING.png" alt="book" height="400px" width="300px">
+  </div>
+  <div id="dictionary-box" class="dictionary hidden">
+  <input type="text" id="word-input" placeholder="Enter word..." />
+  <button onclick="lookupWord()">🔍</button>
+  <div id="result"></div>
+</div>
+</div>
+  </div>
+
+  <div class="container2">
+    <h2 class="genre">Genre</h2>
+    <div class="box3">
+      <ul>
+        <div class="dropdown">
+          <li style="list-style-type: none;">
+            <select name="" class="fiction">
+              <option value="">Fiction</option>
+              <option value="romance">Romance</option>
+              <option value="mystery">Mystery</option>
+              <option value="science-fiction">Sci-Fi</option>
+              <option value="fantasy">Fantasy</option>
+              <option value="historical-fiction">Historical Fiction</option>
+              <option value="horror">Horror</option>
+              <option value="adventure">Adventure</option>
+              <option value="coming of age">Coming of Age</option>
+              <option value="literary fiction">Literary Fiction</option>
+            </select>
+          </li>
+        </div>
+        <div class="dropdown">
+
+          <li style="list-style-type: none;">
+            <select name="" class="non-fiction">
+              <option value="">Non-Fiction</option>
+              <option value="biography">Biography</option>
+              <option value="autobiography">Autobiography</option>
+              <option value="self-help">Self-Help</option>
+              <option value="psychology">Psychology</option>
+              <option value="philosophy">Philosophy</option>
+              <option value="true crime">True Crime</option>
+              <option value="travel">Travel</option>
+              <option value="health & wellness">Health & Wellness</option>
+              <option value="science & technology">Science & Technology</option>
+            </select>
+          </li>
+        </div>
+      </ul>
+    </div>
+  </div>
+
+  <div id="book-list"></div>
+  <script src="booklyn.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Wishlist Reads</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #d1e7f1, #88a3cf);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .logo{
+      position: absolute;
+      top: 45px;
+      right: 60px;
+      z-index: 1000;
+    }
+
+    .logo img {
+      height: 100px;
+      width: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-top-right img:hover {
+      transform: scale(1.1);
+    }
+
+    dotlottie-wc {
+      position: absolute;
+      top: 25px;
+      left: 30px;
+      z-index: 0;
+      opacity: 0.6;
+      margin-top:15px;
+      margin-left:120px;
+    }
+
+    .tracker-container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 100px 20px 50px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h2 {
+      font-size: 36px;
+      margin-bottom: 15px;
+      color: #3b3a67;
+    }
+
+    #book-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .book-card {
+      background: linear-gradient(135deg, #f3ebeb, #c4e1ee);
+      padding: 18px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      width: 260px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: left;
+      border: 1px solid #d3d3d3;
+    }
+
+    .book-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .book-card h4 {
+      margin: 0 0 6px;
+      color: #33314f;
+      font-size: 18px;
+    }
+
+    .book-card p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #4b3f3f;
+      line-height: 1.4;
+    }
+
+    .message {
+      font-size: 22px;
+      color: #453c68;
+      font-family: 'Pacifico', cursive;
+      margin-top: 30px;
+    }
+
+    .start-btn {
+      margin-top: 12px;
+      background: linear-gradient(to right, #6a82fb, #fc5c7d);
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      transition:  0.3s ease, transform 0.2s ease;
+    }
+
+    .start-btn:hover {
+      background: linear-gradient(to right, #5b6cf3, #f94473);
+      transform: scale(1.05);
+    }
+  </style>
+
+  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+</head>
+
+<body>
+  <div class="logo">
+    <a href="booklyn.html">
+      <img src="bb.png" alt="logo">
+    </a>
+  </div>
+  <dotlottie-wc
+    src="https://lottie.host/dfb16689-c212-4a91-b1a9-6e1b6a423a5b/B6Mubu5Fxv.lottie"
+    style="width: 300px; height: 300px"
+    speed="1"
+    autoplay
+    loop></dotlottie-wc>
+  <div class="tracker-container">
+    <h2>💭 Wishlist Reads</h2>
+    <p id="status-message" class="message"></p>
+    <div id="book-list"></div>
+  </div>
+
+  <script>
+    const bookList = document.getElementById('book-list');
+    const statusMsg = document.getElementById('status-message');
+
+    window.onload = loadWishlistBooks;
+
+    function loadWishlistBooks() {
+      bookList.innerHTML = '';
+      const username = localStorage.getItem('username');
+      const key = `${username}-Wishlist Reads`;
+      const books = JSON.parse(localStorage.getItem(key)) || [];
+
+      if (books.length === 0) {
+        statusMsg.textContent = '📚 Nothing in your wishlist yet? Dream a little bigger! 💭';
+        return;
+      }
+
+      statusMsg.textContent = '✨ These are your dream reads. Ready to begin one? ✨';
+
+      books.forEach((book, index) => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+
+        card.innerHTML = `
+          <h4>${book.title}</h4>
+          <p><strong>Author:</strong> ${book.author}</p>
+          <p>${book.description}</p>
+          <button class="start-btn" onclick="startReading(${index})">📖 Start Reading</button>
+        `;
+        bookList.appendChild(card);
+      });
+    }
+
+    function startReading(index) {
+      const username = localStorage.getItem('username');
+
+      const wishlistKey = `${username}-Wishlist Reads`;
+      let wishlistBooks = JSON.parse(localStorage.getItem(wishlistKey)) || [];
+      const selectedBook = wishlistBooks.splice(index, 1)[0];
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlistBooks));
+
+      const currentKey = `${username}-Currently Immersed`;
+      const currentBooks = JSON.parse(localStorage.getItem(currentKey)) || [];
+      currentBooks.push(selectedBook);
+      localStorage.setItem(currentKey, JSON.stringify(currentBooks));
+
+      loadWishlistBooks();
+
+      if (wishlistBooks.length === 0) {
+        statusMsg.textContent = '📚 Nothing in your wishlist yet? Dream a little bigger! 💭';
+      } else {
+        statusMsg.textContent = '🔄 What’s next on your wishlist?';
+      }
+    }
+  </script>
+</body>
+</html>

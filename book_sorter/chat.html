@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="chat.css">
+    <script defer src="http://localhost:5000/socket.io/socket.io.js"></script>
+    <script defer src="chat.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Chat with Book-Sorter</h2>
+            <div class="logo">
+                <a href="booklyn.html">
+                    <img src="bb.png" alt="logo">
+                </a>
+            </div>
+        </div>
+        <div class="chat-area" id="chatarea"></div>
+        <div class="send">
+            <form action="#" id="send-container">
+                <input type="text" id="messageInp" name="messageInp" placeholder="Type your message here...:"/>
+                <button class="btn" type="submit" >Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

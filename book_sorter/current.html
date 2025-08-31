@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Currently Immersed</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, rgb(233, 241, 162), rgb(174, 250, 126), rgb(205, 242, 145));
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .logo {
+  position: absolute;
+  top: 45px;
+  right: 70px;
+  z-index: 1000;
+}
+.logo img {
+  height: 100px;
+  width: auto;
+}
+.main-section {
+      display: flex;
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px 20px;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap; }
+.lottie-left {
+      flex: 1;
+      min-width: 300px;
+      display: flex;
+      justify-content: center;
+}
+.tracker-container {
+      flex: 2;
+      min-width: 300px;
+      padding: 20px;
+}
+h2 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #5c4033;
+      text-align: left;
+}
+#book-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.book-card {
+    background: linear-gradient(to right, #c9f5c3, #efff9e);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    width: 250px;
+    text-align: left;}
+.book-card h4 {
+      margin: 0 0 5px;
+      color: #4e342e;
+    }
+
+    .book-card p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #3e2723;
+    }
+
+    .message {
+      font-size: 20px;
+      color: #3b713f;
+      font-family: 'Pacifico', cursive;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .finish-section {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #4e342e;
+    }
+
+    button.finish-btn {
+      margin-top: 6px;
+      background-color: #6b4d38;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+  </style>
+  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+</head>
+<body>
+<div class="logo">
+    <a href="booklyn.html">
+  <img src="bb.png" alt="logo" height="80">
+  </a>
+</div>
+<div class="main-section">
+  <div class="lottie-left" style="background:transparent;">
+    <dotlottie-wc src="https://lottie.host/9c66695f-77b8-49e8-9db0-a8a9ed9e9a00/8Afyo0OT20.lottie" style="width: 600px;height: 600px" speed="1" autoplay></dotlottie-wc>
+  </div>
+
+  <div class="tracker-container">
+    <h2>📚 Currently Immersed</h2>
+    <p id="status-message" class="message"></p>
+    <div id="book-list"></div>
+  </div>
+</div>
+
+<script>
+  const bookList = document.getElementById('book-list');
+  const statusMsg = document.getElementById('status-message');
+
+  window.onload = loadImmersedBooks;
+
+  function loadImmersedBooks() {
+    bookList.innerHTML = '';
+    const username = localStorage.getItem('username');
+    const key = `${username}-Currently Immersed`;
+    const books = JSON.parse(localStorage.getItem(key)) || [];
+
+    if (books.length === 0) {
+      statusMsg.textContent = '📖 No books currently immersed—what’s stopping you? 📖';
+      return;
+    }
+
+    statusMsg.textContent = '🔥 Keep going! That book deserves a spot in Read & Relived 🔥';
+
+    books.forEach((book, index) => {
+      const card = document.createElement('div');
+      card.className = 'book-card';
+
+      card.innerHTML = `
+        <h4>${book.title}</h4>
+        <p><strong>Author:</strong> ${book.author}</p>
+        <p>${book.description}</p>
+        <div class="finish-section">✅ Do you finish reading this book? Add to Read & Relived</div>
+        <button class="finish-btn" onclick="markAsRead(${index})">📚 Finish Reading</button>
+      `;
+      bookList.appendChild(card);
+    });
+  }
+
+  function markAsRead(index) {
+    const username = localStorage.getItem('username');
+    const ciKey = `${username}-Currently Immersed`;
+    let immersedBooks = JSON.parse(localStorage.getItem(ciKey)) || [];
+    const finishedBook = immersedBooks.splice(index, 1)[0];
+    localStorage.setItem(ciKey, JSON.stringify(immersedBooks));
+    const rrKey = `${username}-Read & Relived`;
+    const readBooks = JSON.parse(localStorage.getItem(rrKey)) || [];
+    readBooks.push(finishedBook);
+    localStorage.setItem(rrKey, JSON.stringify(readBooks));
+    loadImmersedBooks();
+    if (immersedBooks.length === 0) {
+      statusMsg.textContent = '📖 No books currently immersed—what’s stopping you? 📖';
+    } else {
+      statusMsg.textContent = '🚀 Let’s finish the next book!';
+    }
+  }
+</script>
+
+</body>
+</html>
